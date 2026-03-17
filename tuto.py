@@ -9,10 +9,10 @@ from collections import defaultdict
 class ObjectTracking:
     """Object Tracking using Ultralytics YOLO26: https://docs.ultralytics.com/models/yolo26/"""
 
-    def __init__(self, model="yolo26n.pt", source="path/to/video.mp4"):
+    def __init__(self, model_path="yolo26n.pt", source="path/to/video.mp4"):
 
-        self.model = YOLO(model)  # Model initialization
-        self.names = self.model.names  # Store model classes names
+        self.model = YOLO(model_path)  # Model initialization
+        self.names = self.model.names  # Class names
 
         # Video capturing module
         self.cap = cv2.VideoCapture(source)
@@ -36,7 +36,7 @@ class ObjectTracking:
 
         # Display settings
         self.rect_width=2
-        self.font = 1.0
+        self.font = 0.5
         self.text_width=2
         self.padding = 12
         self.margin = 10
@@ -163,11 +163,19 @@ class ObjectTracking:
         cv2.destroyAllWindows()
 
 
-if __name__ == "__main__":
-    # Initialize and run tracker
-    tracker = ObjectTracking(
-        model="yolo26n.pt",
-        source="downloads/video_basket.mp4"
+# --- ETAPE 1 : ENTRAINEMENT (À faire une seule fois) ---
+def train_model():
+    model = YOLO("yolo26s.pt") 
+    model.train(
+        data='data/data.yaml', 
+        epochs=100, imgsz=960, batch=16, device=0, amp=True
     )
+
+# --- ETAPE 2 : TRACKING ---
+if __name__ == "__main__":
+    # Décommente la ligne suivante si tu n'as pas encore entraîné ton modèle :
+    #train_model() 
+    
+    # "runs/detect/train/weights/best.pt" est le chemin par défaut après train
+    tracker = ObjectTracking(model_path="runs/detect/train3/weights/best.pt", source="downloads/video_basket.mp4")
     tracker.run()
-    tracker.writer.release()

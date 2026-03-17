@@ -1,0 +1,16 @@
+# --- Core Deep Learning (Version CUDA 12.1 pour RTX série 40) ---
+--find-links https://download.pytorch.org/whl/cu121
+torch==2.4.0+cu121
+torchvision==0.19.0+cu121
+torchaudio==2.4.0+cu121
+
+# --- YOLO & Vision ---
+ultralytics>=8.3.0
+opencv-python>=4.8.0
+numpy<2.0.0  # Pour éviter des conflits de compatibilité récents
+
+# --- Utilitaires ---
+pandas
+requests
+tqdm
+pyyaml
