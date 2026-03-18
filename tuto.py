@@ -177,5 +177,5 @@ if __name__ == "__main__":
     #train_model() 
     
     # "runs/detect/train/weights/best.pt" est le chemin par défaut après train
-    tracker = ObjectTracking(model_path="runs/detect/train3/weights/best.pt", source="downloads/video_basket.mp4")
+    tracker = ObjectTracking(model_path="runs/detect/train3/weights/best.pt", source="videos/video_basket.mp4")
     tracker.run()
