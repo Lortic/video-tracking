@@ -104,7 +104,15 @@ class ObjectTracking:
                 print("End of video or failed to read image.")
                 break
 
-            results = self.model.track(im0, persist=True)  # Object tracking
+            # --- NOUVEAUX PARAMÈTRES DE TRACKING (SPRINT 2) ---
+            results = self.model.track(
+                im0, 
+                persist=True,
+                tracker="bytetrack.yaml", # ByteTrack gère mieux les occlusions (quand le ballon passe derrière un joueur)
+                conf=0.10,                # On abaisse le seuil de confiance à 10% pour forcer la détection du ballon
+                iou=0.45,                 # Ajuste la façon dont les boîtes se chevauchent
+                imgsz=960                 # CRUCIAL : on track avec la même résolution qu'à l'entraînement !
+            )
 
             if results and len(results) > 0:
                 result = results[0]
@@ -164,17 +172,27 @@ class ObjectTracking:
 
 
 # --- ETAPE 1 : ENTRAINEMENT (À faire une seule fois) ---
+# --- ETAPE 1 : ENTRAINEMENT  ---
 def train_model():
     model = YOLO("yolo26s.pt") 
     model.train(
         data='data/data.yaml', 
-        epochs=100, imgsz=960, batch=16, device=0, amp=True
+        epochs=100, 
+        imgsz=960, 
+        batch=4,          # <--- MODIFICATION : on passe de 16 à 4 (voire 2 si ça plante encore)
+        workers=2,        # <--- NOUVEAU : limite le nombre de cœurs CPU qui chargent les données
+        device='cpu',     
+        amp=True,
+        patience=20,
+        mosaic=1.0,
+        scale=0.5,
+        hsv_v=0.4
     )
 
 # --- ETAPE 2 : TRACKING ---
 if __name__ == "__main__":
     # Décommente la ligne suivante si tu n'as pas encore entraîné ton modèle :
-    #train_model() 
+    train_model() 
     
     # "runs/detect/train/weights/best.pt" est le chemin par défaut après train
     tracker = ObjectTracking(model_path="runs/detect/train3/weights/best.pt", source="videos/video_basket.mp4")
