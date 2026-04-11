@@ -171,7 +171,6 @@ class ObjectTracking:
         cv2.destroyAllWindows()
 
 
-# --- ETAPE 1 : ENTRAINEMENT (À faire une seule fois) ---
 # --- ETAPE 1 : ENTRAINEMENT  ---
 def train_model():
     model = YOLO("yolo26s.pt") 
@@ -179,21 +178,20 @@ def train_model():
         data='data/data.yaml', 
         epochs=100, 
         imgsz=960, 
-        batch=4,          # <--- MODIFICATION : on passe de 16 à 4 (voire 2 si ça plante encore)
-        workers=2,        # <--- NOUVEAU : limite le nombre de cœurs CPU qui chargent les données
-        device='cpu',     
+        batch=16,
+        device=0,     
         amp=True,
         patience=20,
         mosaic=1.0,
         scale=0.5,
-        hsv_v=0.4
+        hsv_v=0.4   
     )
 
 # --- ETAPE 2 : TRACKING ---
 if __name__ == "__main__":
     # Décommente la ligne suivante si tu n'as pas encore entraîné ton modèle :
-    train_model() 
+    #train_model() 
     
     # "runs/detect/train/weights/best.pt" est le chemin par défaut après train
-    tracker = ObjectTracking(model_path="runs/detect/train3/weights/best.pt", source="videos/video_basket.mp4")
+    tracker = ObjectTracking(model_path="runs/detect/train5/weights/best.pt", source="videos/video_basket.mp4")
     tracker.run()
