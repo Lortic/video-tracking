@@ -12,14 +12,13 @@ Notre projet est une application capable de détecter et de suivre un ou plusieu
 
 * **Détection d'objets** : Détection en temps réel d'objets dans une scène.
 * **Suivi continu (Tracking)** : Maintien de l'identification et suivi d'objets persistants tout au long de la vidéo.
-* **Étude comparative** : Comparaison des performances entre des détecteurs classiques (ex. YOLOv11) et des approches basées sur les Vision Transformers (ex. DETR).
 * **Évaluation des performances** : Mesure de l'efficacité de l'application à l'aide de métriques adaptées telles que l'IoU, la mAP, et le F1-score.
 
 ## 🛠️ Outils Technologiques
 
 * **Langage** : Python.
-* **Modèles de Détection (Vision/IA)** : YOLOv11, RetinaNet, Faster R-CNN ou DETR.
-* **Algorithmes de Suivi** : DeepSORT, ByteTrack ou OC-SORT.
+* **Modèles de Détection (Vision/IA)** : YOLO26 (réflexion sur : RetinaNet, Faster R-CNN ou DETR).
+* **Algorithmes de Suivi** : DeepSORT, ByteTrack.
 * **Outils de validation** : Implémentation de méthodes de recherche d'hyperparamètres et évaluation comparative sur des ensembles de données.
 
 ## 👥 Auteurs
